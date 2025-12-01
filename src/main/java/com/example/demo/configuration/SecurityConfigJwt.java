@@ -53,7 +53,8 @@ public class SecurityConfigJwt {
         http.authenticationManager(authenticationManager);
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signin", "/signup","/api/users/rol/","/api/roles", "/api/users","https://graphql-am5y.onrender.com/", "https://graphql-am5y.onrender.com/**").permitAll()
+                .requestMatchers("/signin", "/signup","/api/users/rol/","/api/roles", "/api/users",
+                "https://graphql-am5y.onrender.com","https://graphql-am5y.onrender.com/", "https://graphql-am5y.onrender.com/**").permitAll()
 
                 .requestMatchers("/graphql/**", "/playground/**", "/graphiql/**").permitAll()
 
