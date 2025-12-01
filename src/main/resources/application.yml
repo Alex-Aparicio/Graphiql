@@ -1,0 +1,61 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:dpg-d4dr46hr0fns73fs91fg-a.oregon-postgres.render.com}:${DB_PORT:5432}/${DB_NAME:tourist_wcnd}
+    username: ${DB_USERNAME:alex}
+    password: ${DB_PASSWORD:lgEh7P0LwPYzKl8qfetPNFvzaoADSQBe}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+#  CONFIGURACIÓN JWT
+security:
+  jwt:
+    secret-key: 9F8A1C7D4B2E6A9C3D5F7B8E1A4C6D9E2F0A7B3C8D1E5F9A6C4B7D2F8E0A3C9B
+    expiration-time: 50000
+
+  # CONFIGURACIÓN GRAPHQL
+  graphql:
+    graphiql:
+      enabled: true       # habilita la consola GraphiQL
+      path: /graphiql     # ruta para acceder a la UI
+    schema:
+      locations: classpath:/graphql/ # dónde buscar tus .graphqls
+    websocket:
+      path: /graphql
+
+
+cors:
+  allowed-origins:
+    - "http://localhost:3000"
+    - "http://localhost:8081"
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - PATCH
+  allowed-headers:
+    - Authorization
+    - Content-Type
+  allow-credentials: true
+
+
+#  LOGGING
+logging:
+  level:
+    com.example.demo: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+

@@ -1,0 +1,400 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  # State queries
+
+  findAllStatesWithPagination(
+    page: Int!
+    pageSize: Int!
+  ): [StateResponse]
+  # findById(id: Int): StateResponse
+  findByNameLike(name: String): [StateResponse]
+
+
+  # TouristPlace queries
+
+  # findTouristPlaceById(id: Int): TouristPlaceResponse
+  findTouristPlacesByNameLike(name: String): [TouristPlaceResponse]
+  # findTouristPlacesByMunicipalityId(municipalityId: Int): [TouristPlaceResponse]
+  findAllTouristPlacesWithPagination(
+    page: Int
+    pageSize: Int
+  ): [TouristPlaceResponse]
+
+  # Events queries
+
+  # findEventById(id: Int): EventResponse
+  findAllEventsWithPagination(page: Int, pageSize: Int): [EventResponse]
+
+  # Gastronomies queries
+
+  findAllGastronomiesWithPagination(page: Int!, pageSize: Int!): [Gastronomy]
+
+  #Legends queries
+
+  # legendById(id: Int!): Legend
+  findAllLegendsWithPagination(page: Int!, pageSize: Int!): [Legend]
+
+  #Stories queries
+
+  # storyById(id: Int): Story
+  findAllStoriesWithPagination(page: Int!, pageSize: Int!): [Story]
+
+  #Services queries
+
+  # serviceById(id: Int): Service
+  findAllServicesWithPagination(page: Int!, pageSize: Int!): [Service]
+  findServicesByName(name: String!): [Service]
+  findServicesByType(type: String!): [Service]
+  findServicesByPriceRange(range: String!): [Service]
+  findServicesByTouristPlaceName(placeName: String!): [Service]
+
+  #TransportOptions queries
+
+  # transportOptionById(id: Int): TransportOption
+  findAllTransportOptionsWithPaginated(page: Int!, pageSize: Int!): [TransportOption]
+  findTransportOptionsByType(type: String!): [TransportOption]
+
+  #Reviews queries
+
+  # reviewById(id: Int): Review
+  # allReviews: [Review]
+  findAllReviewsWithPagination(page: Int!, pageSize: Int!): [Review]
+  # reviewsByUserId(userId: Int!, page: Int!, pageSize: Int!): [Review]
+
+  #ServiceReviews queries
+
+  # serviceReviewById(id: Int): ServiceReview
+  findAllServiceReviewsWithPagination(page: Int!, pageSize: Int!): [ServiceReview]
+  serviceReviewsByRating(rating: Int!): [ServiceReview]
+  searchServiceReviews(keyword: String!): [ServiceReview]
+
+  #FavoritePlaces queries
+
+  favoritePlaceById(id: Int): FavoritePlace
+  favoritesByUserId(userId: Int!): [FavoritePlace]
+  isFavorite(userId: Int!, placeId: Int!): Boolean
+
+  #ReviewImages queries
+
+  findAllReviewImagesWithPagination(
+    page: Int!
+    pageSize: Int!
+  ): [ReviewImageResponse]
+  # getReviewImageById(id: Int!): ReviewImageResponse
+  findReviewImagesByReview(reviewId: Int!): [ReviewImageResponse]
+
+  #Municipalities queries
+
+  findAllMunicipalitiesWithPagination(
+    page: Int!
+    pageSize: Int!
+  ): [MunicipalityResponse]
+  # getMunicipalityById(id: Int!): MunicipalityResponse
+  # getMunicipalitiesByStateId(stateId: Int!): [MunicipalityResponse]
+  findMunicipalitiesByName(name: String!): [MunicipalityResponse]
+}
+
+
+
+type Mutation {
+  # State mutations
+  create(request: StateRequest): StateResponse
+  # update(id: Int, request: StateRequest): StateResponse
+
+  # TouristPlace mutations
+  createTouristPlace(
+    municipalityId: Int
+    addressId: Int
+    request: TouristPlaceRequest
+  ): TouristPlaceResponse
+  updateTouristPlace(
+    id: Int
+    municipalityId: Int
+    addressId: Int
+    request: TouristPlaceRequest
+  ): TouristPlaceResponse
+
+  # Events Mutation
+  createEvent(placeId: Int, request: EventRequest): EventResponse
+  updateEvent(id: Int, request: EventRequest): EventResponse
+
+  #Gastronomies Mutation
+
+  # Crear un nuevo platillo asociado a un lugar
+  createGastronomy(placeId: Int!, input: GastronomyInput!): Gastronomy
+
+  # Actualizar un platillo existente
+  updateGastronomy(id: Int!, input: GastronomyInput!): Gastronomy
+
+  # Eliminar un platillo
+  # deleteGastronomy(id: Int!): String
+
+  #Legends Mutation
+  createLegend(placeId: Int!, input: LegendInput!): Legend
+  # updateLegend(id: Int!, input: LegendInput!): Legend
+
+  #Stories Mutation
+  createStory(placeId: Int!, input: StoryInput!): Story
+  # updateStory(id: Int!, input: StoryInput!): Story
+
+  #Services Mutation
+  createService(placeId: Int!, addressId: Int!, input: ServiceInput!): Service
+  updateService(
+    id: Int!
+    placeId: Int!
+    addressId: Int!
+    input: ServiceInput!
+  ): Service
+
+  #TransportOption Mutation
+
+  createTransportOption(
+    placeId: Int!
+    input: TransportOptionInput!
+  ): TransportOption
+  updateTransportOption(id: Int!, input: TransportOptionInput!): TransportOption
+  # deleteTransportOption(id: Int!): String
+
+  #Reviews Mutation
+  createReview(userId: Int!, placeId: Int!, input: ReviewInput!): Review
+  updateReview(id: Int!, input: ReviewInput!): Review
+  deleteReview(id: Int!): String
+
+  #ServiceReviews Mutation
+
+  createServiceReview(
+    serviceId: Int!
+    userId: Int!
+    input: ServiceReviewInput!
+  ): ServiceReview
+  updateServiceReview(id: Int!, input: ServiceReviewInput!): ServiceReview
+  deleteServiceReview(id: Int!): String
+
+  #FavoritePlaces Mutation
+
+  createFavoritePlace(input: FavoritePlaceInput!): FavoritePlace
+  deleteFavoritePlace(id: Int!): String
+
+  #ReviewImages Mutation
+
+  createReviewImage(
+    reviewId: Int!
+    request: ReviewImageRequest!
+  ): ReviewImageResponse
+  updateReviewImage(id: Int!, request: ReviewImageRequest!): ReviewImageResponse
+  deleteReviewImage(id: Int!): String
+
+  #Municipalities Mutation
+
+  createMunicipality(
+    stateId: Int!
+    request: MunicipalityRequest!
+  ): MunicipalityResponse
+  updateMunicipality(
+    id: Int!
+    stateId: Int!
+    request: MunicipalityRequest!
+  ): MunicipalityResponse
+}
+
+
+
+
+
+
+
+# --- States (states) ---
+
+type StateResponse {
+  id_state: ID!
+  name: String!
+}
+
+input StateRequest {
+  name: String!
+}
+
+# --- TouristPlaces (Places) ---
+
+type TouristPlaceResponse {
+  id_place: ID!
+  name: String!
+  description: String
+  municipalityId: Int
+  addressId: Int
+}
+
+input TouristPlaceRequest {
+  name: String!
+  description: String
+}
+
+# --- Events (Events) ---
+
+type EventResponse {
+  id_event: ID!
+  id_place: Int!
+  name: String!
+  description: String!
+  eventDate: String!
+}
+
+input EventRequest {
+  name: String!
+  description: String!
+  eventDate: String!
+}
+
+# --- Gastronomies (Platillo) ---
+
+type Gastronomy {
+  id_dish: Int
+  id_place: Int
+  name: String
+  description: String
+}
+
+input GastronomyInput {
+  name: String!
+  description: String!
+}
+
+# --- Legends (Legendas) ---
+
+type Legend {
+  id_legend: Int
+  id_place: Int
+  title: String
+  story: String
+  origin: String
+}
+
+input LegendInput {
+  title: String!
+  story: String!
+  origin: String
+}
+
+# --- Stories (Historias y tradiciones) ---
+
+type Story {
+  id_story: Int
+  id_place: Int
+  history: String
+  traditions: String
+}
+
+input StoryInput {
+  history: String!
+  traditions: String!
+}
+
+# --- Services (Servicios asociados a lugares) ---
+
+type Service {
+  id_service: Int
+  name: String
+  type: String
+  description: String
+  priceRange: String
+  contactInfo: String
+  placeId: Int
+  addressId: Int
+}
+
+input ServiceInput {
+  name: String!
+  type: String!
+  description: String
+  priceRange: String
+  contactInfo: String
+}
+
+# --- TransportOptions (Opciones de transporte) ---
+
+type TransportOption {
+  id_transport: Int
+  id_place: Int
+  type: String
+  description: String
+}
+
+input TransportOptionInput {
+  type: String!
+  description: String!
+}
+
+# --- Reviews (Reseñas de usuarios) ---
+
+type Review {
+  id_review: Int
+  id_user: Int
+  id_place: Int
+  title: String
+  content: String
+  rating: Int
+}
+
+input ReviewInput {
+  title: String!
+  content: String!
+  rating: Int!
+}
+
+# --- ServiceReviews (reseñas de servicios) ---
+
+type ServiceReview {
+  id_serviceReview: Int
+  rating: Int
+  comment: String
+  serviceId: Int
+  userId: Int
+}
+
+input ServiceReviewInput {
+  rating: Int!
+  comment: String!
+}
+
+# --- FavoritePlaces (lugares favoritos) ---
+
+type FavoritePlace {
+  id_favorite: Int
+  id_user: Int
+  id_place: Int
+}
+
+input FavoritePlaceInput {
+  idUser: Int!
+  idPlace: Int!
+}
+
+# --- ReviewImages (lugares favoritos) ---
+
+type ReviewImageResponse {
+  id_image: Int
+  id_review: Int
+  url: String
+  description: String
+}
+
+input ReviewImageRequest {
+  url: String!
+  description: String
+}
+
+# --- Municipalities (municipalities) ---
+
+type MunicipalityResponse {
+  id_municipality: Int
+  stateId: Int
+  name: String
+}
+
+input MunicipalityRequest {
+  name: String!
+}
